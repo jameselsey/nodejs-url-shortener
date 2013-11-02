@@ -2,4 +2,10 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to my url shortener
+
+  form(name="input", action="/create", method="post")
+    | URL:
+    input(type="text", name="urlToShorten")
+
+    input(type="submit", value="Submit")
