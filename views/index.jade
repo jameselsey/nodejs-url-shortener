@@ -8,6 +8,8 @@ block content
   div.content
   div.well
     form.form-horizontal(name="input", action="/create", method="post")
-      div.form-group
+      div.form-group(align='center')
+        p
           input(type="text", name="urlToShorten", class="form-control", placeholder="Enter a URL")
+        p
           input(type="submit", value="Shorten", class="btn btn-primary")
