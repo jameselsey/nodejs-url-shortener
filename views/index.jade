@@ -2,10 +2,12 @@ extends layout
 
 block content
   h1= title
-  p Welcome to my url shortener
+  h1.text-center Node.js URL Shortener
 
-  form(name="input", action="/create", method="post")
-    | URL:
-    input(type="text", name="urlToShorten")
-
-    input(type="submit", value="Submit")
+  div.container
+  div.content
+  div.well
+    form.form-horizontal(name="input", action="/create", method="post")
+      div.form-group
+          input(type="text", name="urlToShorten", class="form-control", placeholder="Enter a URL")
+          input(type="submit", value="Shorten", class="btn btn-primary")

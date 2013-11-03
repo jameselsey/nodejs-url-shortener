@@ -1,22 +1,22 @@
 /*
  * POST creates a short url from a long url
  */
-exports.createShort = function(req, res){
+exports.createShort = function (req, res) {
     var urlToShorten = req.body.urlToShorten;
 
-    if(!urlToShorten){
+    if (!urlToShorten) {
         console.log('Request did not contain a url to shorten, please provide urlToShorten')
-        res.send('Request did not contain a url to shorten, please provide urlToShorten')
+        res.render('short', {message: 'Request did not contain a url to shorten, please provide urlToShorten'})
     } else {
         console.log("Shortening url of " + urlToShorten);
-        res.send("This will respond with a shortened url for " + urlToShorten);
+        res.render('short', {shortUrl: "ShRtU123"});
     }
 };
 
 /*
  * GET retrieves long url from short url
  */
-exports.getLong = function(req, res){
+exports.getLong = function (req, res) {
     // grab the path and strip the leading slash
     var shortUrl = req.path.substring(1)
 

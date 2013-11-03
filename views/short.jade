@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  h1.text-center Node.js URL Shortener
+
+  div.container
+  div.content
+  div.well
+    div(align='center')
+      h1: a(href="#{shortUrl}") #{shortUrl}
+      a.btn.btn-primary Copy to clipboard
