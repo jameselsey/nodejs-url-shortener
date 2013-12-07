@@ -16,7 +16,7 @@ exports.createShort = function (req, res) {
         console.log("Request to shorten " + urlToShorten);
 
         urlToShorten = addhttp(urlToShorten);
-        var baseUrl = 'http://localhost:' + req.app.get('port') + '/';
+        var baseUrl = 'http://' + req.app.get('hostname') + '/';
 
         var shortCode = createShortCode(urlToShorten);
         res.setHeader('Content-Type', 'text/html');
