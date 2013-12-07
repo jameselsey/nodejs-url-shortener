@@ -5,16 +5,19 @@ exports.createShort = function (req, res) {
     var urlToShorten = req.body.urlToShorten;
 
     if (!urlToShorten) {
-        console.log('Request did not contain a url to shorten, please provide urlToShorten')
-        res.render('short', {message: 'Request did not contain a url to shorten, please provide urlToShorten'})
+        console.log('Request did not contain a url to shorten, please provide urlToShorten');
+        res.render('short', {message: 'Request did not contain a url to shorten, please provide urlToShorten'});
     } else {
-        console.log("Shortening url of " + urlToShorten);
-        var baseUrl = 'http://localhost:' + req.app.get('port') + '/'
-        var shortUrlCode = createShortUrl(urlToShorten)
+        console.log("Request to shorten " + urlToShorten);
+
+        urlToShorten = addhttp(urlToShorten);
+
+        var baseUrl = 'http://localhost:' + req.app.get('port') + '/';
+        var shortCode = createShortCode(urlToShorten);
 
         res.setHeader('Content-Type', 'text/html');
         res.statusCode = 200;
-        res.render('short', { shortUrl: baseUrl + shortUrlCode });
+        res.render('short', { shortUrl: baseUrl + shortCode });
     }
 };
 
@@ -23,16 +26,22 @@ exports.createShort = function (req, res) {
  */
 exports.getLong = function (req, res) {
     // grab the path and strip the leading slash
-    var shortUrl = req.path.substring(1)
+    var shortCode = req.path.substring(1);
 
-    console.log("fetching short url " + shortUrlCode)
+    console.log("Fetching URL indexed by " + shortCode);
 
-    res.send("This will return the long url from " + shortUrlCode);
+    var theLongUrl = shortToLong[shortCode];
+    console.log('Short code ' + shortCode + " refers to " + theLongUrl);
+
+    console.log("redirecting to " + theLongUrl);
+
+    res.writeHead(302, {'Location': theLongUrl});
+    res.end();
 };
 
 var id = 0;
-var longToShort = new Array();
-var shortToLong = new Array();
+var longToShort = [];
+var shortToLong = [];
 var CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHUJKLMNOPQRSTUVWXYZ';
 
 function numToBase62(n) {
@@ -43,22 +52,34 @@ function numToBase62(n) {
     }
 }
 
-function createShortUrl(longUrl) {
-    console.log("Shortening url of " + longUrl);
+function createShortCode(longUrl) {
+    console.log("Creating short code for url " + longUrl);
 
-    /* Check whether the url has been added before */
+    // Check if there is already a shortcode for the longUrl
     shortUrlCode = longToShort[longUrl];
+
     if (shortUrlCode == undefined) {
+        console.log(longUrl + " has not already been shortened, so shortening it now.");
         shortUrlCode = numToBase62(id);
         while (shortUrlCode.length < 5) {
             /* Add padding */
             shortUrlCode = CHARS[0] + shortUrlCode;
         }
+
+        console.log("Shortened " + longUrl + " to a shortcode of " + shortUrlCode);
+
         longToShort[longUrl] = shortUrlCode;
         shortToLong[shortUrlCode] = longUrl;
         id++;
     }
 
     return shortUrlCode;
+}
+
+function addhttp(url) {
+    if (!/^(f|ht)tps?:\/\//i.test(url)) {
+        url = "http://" + url;
+    }
+    return url;
 }
 
