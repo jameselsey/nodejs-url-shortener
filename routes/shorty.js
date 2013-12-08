@@ -65,11 +65,15 @@ function createShortCode(longUrl) {
 function randomString(length) {
     var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHUJKLMNOPQRSTUVWXYZ';
     var result = '';
+
+    console.log("Generating random alphanumeric string of length " + length);
     for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
     return result;
 }
 
 function addhttp(url) {
+    console.log("Adding http:// prefix to " + url + " if it doesnt already have it.");
+
     if (!/^(f|ht)tps?:\/\//i.test(url)) {
         url = "http://" + url;
     }
